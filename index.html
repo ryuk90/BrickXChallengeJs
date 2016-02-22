@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>BrickX challenge!</title>
+
+    <link rel="stylesheet" type="text/css" href="./css.css" />
+
+    <script src="./libs/react.min.js"></script>
+    <script src="./libs/react-dom.min.js"></script>
+    <script src="./libs/react-with-addons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+</head>
+<body>
+
+
+
+
+<div id="plateau"></div>
+
+<script type="text/babel">
+
+
+    var PLATEAU_WIDTH = 6;
+    var PLATEAU_HEIGHT = 4;
+
+var CSSTransitionGroup = React.addons.CSSTransitionGroup;
+
+var InputMoves = React.createClass({
+
+  getInitialState: function() {
+    return {x: 0, y: 0, direction: "E"};
+  },
+
+  handleKeyPress: function(event) {
+
+    var key = event.keyCode;
+     switch(key){
+        case 77:
+           switch(this.state.direction){
+            case "E":
+                var x = this.state.x+100;
+                if(x/100 < PLATEAU_WIDTH && x/100 >= 0)
+                    this.setState({x: x, y: this.state.y, direction: this.state.direction});
+                break;
+            case "W":
+                var x = this.state.x-100;
+                if(x/100 < PLATEAU_WIDTH && x/100 >= 0)
+                    this.setState({x: x, y: this.state.y, direction: this.state.direction});
+                break;
+            case "N":
+                var y = this.state.y+100;
+                if(y/100 < PLATEAU_HEIGHT && y/100 >= 0)
+                    this.setState({x: this.state.x, y: y, direction: this.state.direction});
+                break;
+            case "S":
+                var y = this.state.y-100;
+                if(y/100 < PLATEAU_HEIGHT && y/100 >= 0)
+                    this.setState({x: this.state.x, y: y, direction: this.state.direction});
+                break;
+           }
+
+           break;
+
+        case 76:
+
+           var new_direction = "";
+
+           switch(this.state.direction){
+            case "E":
+                new_direction = "S"
+                break;
+            case "W":
+                new_direction = "N"
+                break;
+            case "N":
+                new_direction = "E"
+                break;
+            case "S":
+                new_direction = "W"
+                break;
+           }
+
+           this.setState({x: this.state.x, y: this.state.y, direction: new_direction});
+        break;
+
+
+        case 82:
+
+           var new_direction = "";
+
+           switch(this.state.direction){
+            case "E":
+                new_direction = "N"
+                break;
+            case "W":
+                new_direction = "S"
+                break;
+            case "N":
+                new_direction = "W"
+                break;
+            case "S":
+                new_direction = "E"
+                break;
+           }
+
+           this.setState({x: this.state.x, y: this.state.y, direction: new_direction});
+        break;
+
+    }
+
+  },
+  render: function() {
+
+
+    var style = {left:this.state.x, top: this.state.y}
+
+
+    return (
+        <div id="box">
+
+            <input onKeyDown={this.handleKeyPress} placeholder="Move the rover (M L R)" />
+
+
+            <div className="plateau">
+                <table>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+
+                <div id="plateau">
+                    <CSSTransitionGroup
+                      className="animateExample"
+                      transitionName="bb"
+                      transitionEnterTimeout={250}
+                      transitionLeaveTimeout={250}>
+                      <div className="animateItem" style={style}></div>
+                    </CSSTransitionGroup>
+                </div>
+
+            </div>
+        </div>
+    );
+  }
+});
+
+ReactDOM.render(
+  <InputMoves />,
+  document.getElementById('plateau')
+);
+
+
+
+</script>
+
+
+</body>
+</html>
